@@ -1,37 +1,46 @@
-# Implementation Plan: 微信小游戏 Adapter TypeScript 重构
+# Implementation Plan: PixiJS 游戏框架
 
-**Branch**: `001-pixijs-game-framework` | **Date**: 2026-04-12 | **Spec**: [spec.md](./spec.md)
-**Input**: 将微信小游戏官方 weapp-adapter.js 转为 TypeScript 模块化版本，一个类一个文件
+**Branch**: `001-pixijs-game-framework` | **Date**: 2026-04-13 | **Spec**: [spec.md](./spec.md)
+**Input**: Feature specification from `/specs/001-pixijs-game-framework/spec.md`
+
+**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/plan-template.md` for the execution workflow.
 
 ## Summary
 
-将微信小游戏官方 adapter（`weapp-adapter/weapp-adapter.js`，1593 行 webpack 打包产物，~450 行源码）重构为 TypeScript 模块化实现。参照已有的抖音 adapter TypeScript 版本（`packages/platform-douyin/src/`）的目录结构和模式，每个类/对象独立文件，放置到 `packages/platform-wechat/src/`。同时修正原版中的已知 bug（`ELement` 拼写、`timestampe` 拼写、`UNSEND` → `UNSENT`、for 循环错误等）。
+基于 PixiJS v8 构建模块化游戏开发框架，支持 Web、微信小游戏、抖音小游戏三端发布。采用 monorepo 架构，各功能模块独立 npm 包，通过 tree-shaking 实现按需引入，核心包体控制在 50KB(gzip)以内。
+
+主要技术方案：
+- PixiJS Assets 作为资源基础设施，集成 AssetPack 分块加载
+- 场景管理器提供生命周期和过渡动画支持
+- UI 分层基于 PixiJS Layout 实现弹性布局
+- 平台适配层抽象窗口、存储、输入等平台差异
+- 调试工具面板仅在开发模式存在
 
 ## Technical Context
 
-**Language/Version**: TypeScript (strict mode)
-**Primary Dependencies**: 微信小游戏 wx.* API（16 个 API）
-**Storage**: N/A
-**Testing**: Vitest
-**Target Platform**: 微信小游戏
-**Project Type**: npm monorepo 多包库（平台适配器）
-**Performance Goals**: 零运行时开销（纯类型+模块化重构）
-**Constraints**: 与原 JS 版 API 完全兼容，双环境注入（devtools + 真机）
-**Scale/Scope**: ~450 行源码 → ~26 个 TypeScript 文件
+**Language/Version**: TypeScript 5.7+ (strict mode)
+**Primary Dependencies**: PixiJS 8.13+, @pixi/layout, @pixi/assetpack, @pixi/spine-pixi
+**Storage**: 平台本地存储适配（localStorage/微信 Storage/抖音 Storage）
+**Testing**: Vitest + Playwright（E2E）
+**Target Platform**: Web (ES2020+), 微信小游戏, 抖音小游戏
+**Project Type**: library (npm monorepo 多包发布)
+**Performance Goals**: 60 FPS (桌面), 30+ FPS (移动端), 首屏加载 < 3s
+**Constraints**: 核心包 < 50KB gzip, 全模块裁剪后减少 60%+ 体积
+**Scale/Scope**: 10+ 个功能包，支持 3 个平台，示例项目 3 个
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-| 原则 | 状态 | 说明 |
+| 原则 | 状态 | 备注 |
 |------|------|------|
-| I. 性能优先 | PASS | 纯类型重构，无运行时性能影响 |
-| II. 模块化架构 | PASS | 每个类独立文件，按职责分目录 |
-| III. 类型安全 | PASS | TypeScript strict mode，wx API 完整类型声明 |
-| IV. 渲染一致性 | PASS | 保持与原版完全一致的运行时行为 |
-| V. 资源管理 | PASS | 不涉及资源加载逻辑 |
-| VI. 可测试性 | PASS | 每个类可独立测试 |
-| VII. 简洁性 | PASS | 参照抖音版本已验证的模式，不引入新抽象 |
+| I. 性能优先 | ✅ PASS | 目标 60 FPS，使用对象池，纹理合批 |
+| II. 模块化架构 | ✅ PASS | monorepo 结构，模块间通过事件/接口通信 |
+| III. 类型安全 | ✅ PASS | strict mode, 禁止 any |
+| IV. 渲染一致性 | ✅ PASS | 统一 resolution/autoDensity，支持降级 |
+| V. 资源管理 | ✅ PASS | Assets 统一管理，显式生命周期 |
+| VI. 可测试性 | ✅ PASS | 逻辑渲染分离，提供 Mock |
+| VII. 简洁性 | ⚠️ CHECK | 需验证不引入过度设计 |
 
 ## Project Structure
 
@@ -39,104 +48,52 @@
 
 ```text
 specs/001-pixijs-game-framework/
-├── plan.md              # This file
-├── research.md          # R20: 微信 adapter 转换决策
-└── tasks.md             # 实施任务列表
+├── plan.md              # 本文件
+├── research.md          # 技术调研和决策
+├── data-model.md        # 数据模型和实体定义
+├── quickstart.md        # 快速开始指南
+├── contracts/           # API 契约文档
+└── tasks.md             # 任务列表（后续生成）
 ```
 
 ### Source Code (repository root)
 
 ```text
-packages/platform-wechat/src/
-├── index.ts                    # 统一导出
-├── inject.ts                   # 全局注入逻辑（devtools + 真机双路径）
-├── wechat-adapter.ts           # WechatAdapter（已有，保留）
-├── wechat-storage.ts           # WechatStorage（已有，保留）
-│
-├── types/
-│   └── wx.d.ts                 # wx.* API 类型声明
-│
-├── util/
-│   ├── noop.ts                 # 空函数工具
-│   └── css-style.ts            # CSS 样式默认值（如需）
-│
-├── event/
-│   ├── Event.ts                # 基础事件类
-│   ├── EventTarget.ts          # 事件目标基类
-│   └── TouchEvent.ts           # 触摸事件 + touchEventHandlerFactory
-│
-├── dom/
-│   ├── Node.ts                 # DOM 节点基类
-│   ├── Element.ts              # DOM 元素
-│   ├── HTMLElement.ts          # HTML 元素
-│   ├── HTMLCanvasElement.ts    # Canvas 元素基类
-│   ├── HTMLImageElement.ts     # Image 元素基类
-│   ├── HTMLMediaElement.ts     # 媒体元素基类
-│   ├── HTMLAudioElement.ts     # 音频元素基类
-│   ├── HTMLVideoElement.ts     # 视频元素基类
-│   ├── DocumentElement.ts      # document.documentElement
-│   ├── Body.ts                 # document.body
-│   ├── Canvas.ts               # Canvas 工厂（包装 wx.createCanvas）
-│   ├── Image.ts                # Image 工厂（包装 wx.createImage）
-│   └── document.ts             # document 单例对象
-│
-├── media/
-│   ├── Audio.ts                # 音频播放器（包装 wx.createInnerAudioContext）
-│   └── AudioContext.ts         # 音频上下文（如需）
-│
-├── network/
-│   ├── XMLHttpRequest.ts       # HTTP 请求（包装 wx.request）
-│   └── WebSocket.ts            # WebSocket（包装 wx.connectSocket）
-│
-├── worker/
-│   └── Worker.ts               # Worker（如 wx.createWorker 可用）
-│
-├── storage/
-│   ├── localStorage.ts         # 本地存储（包装 wx.*StorageSync）
-│   ├── Blob.ts                 # Blob 类
-│   ├── FileReader.ts           # FileReader 桩
-│   └── URL.ts                  # URL 类
-│
-├── navigator/
-│   └── navigator.ts            # navigator 单例
-│
-├── performance/
-│   └── performance.ts          # performance 单例（包装 wx.getPerformance）
-│
-├── screen/
-│   ├── screen.ts               # screen 单例
-│   └── matchMedia.ts           # matchMedia 桩
-│
-└── window/
-    ├── window.ts               # window 单例
-    ├── location.ts             # location 单例
-    ├── getComputedStyle.ts     # getComputedStyle 函数
-    ├── scrollTo.ts             # scrollTo 函数
-    ├── scrollBy.ts             # scrollBy 函数
-    ├── alert.ts                # alert 函数
-    ├── focus.ts                # focus 函数
-    └── blur.ts                 # blur 函数
+packages/                    # 核心功能包
+├── core/                   # 框架核心（GameApplication、模块系统、平台抽象）
+├── assets/                 # 资源管理（加载、缓存、引用计数、AssetPack）
+├── scene/                  # 场景管理（切换、过渡、生命周期）
+├── ui/                     # UI 层（布局、组件）
+├── platform-web/           # Web 平台适配
+├── platform-wechat/        # 微信小游戏适配
+├── platform-douyin/        # 抖音小游戏适配
+├── debug/                  # 调试工具（仅在开发模式）
+├── spine/                  # Spine 动画支持（可选）
+└── test-utils/             # 测试工具
+
+apps/                       # 示例应用
+├── demo/                   # 完整演示项目
+├── my-game/                # 最小示例项目
+└── playground/             # 测试场
+
+scripts/                    # 构建和发布脚本
+├── build-minigame.js       # 小游戏构建
+├── release-minigame.js     # 小游戏发布
+├── release-npm.js          # npm 发布
+└── analyze-bundle.js       # 包体分析
+
+docs/                       # 文档
+├── MINIGAME_BUILD.md       # 小游戏构建指南
+└── MINIGAME_RELEASE.md     # 小游戏发布指南
 ```
 
-**Structure Decision**: 参照抖音 adapter TypeScript 版本的目录结构，按职责分为 util/、event/、dom/、media/、network/、worker/、storage/、navigator/、performance/、screen/、window/ 子目录。保留已有的 wechat-adapter.ts 和 wechat-storage.ts（PlatformAdapter 接口实现）。
-
-## 与原版差异
-
-### 修正的 Bug
-
-| 原版问题 | 修正 |
-|----------|------|
-| `class ELement` | → `class Element` |
-| `this.timestampe` | → `this.timestamp` |
-| `XMLHttpRequest.UNSEND` | → `XMLHttpRequest.UNSENT` |
-| `for (let i = arr.length; i--; i > 0)` | → `for (let i = arr.length - 1; i >= 0; i--)` |
-| `construct()` in FileReader | → `constructor()` |
-| `this.childern` | → `this.children` |
-
-### wx.* API 清单（16 个）
-
-`wx.getSystemInfoSync`, `wx.getPerformance`, `wx.createCanvas`, `wx.createImage`, `wx.createInnerAudioContext`, `wx.onTouchStart/Move/End/Cancel`, `wx.request`, `wx.connectSocket`, `wx.getStorageInfoSync`, `wx.getStorageSync`, `wx.setStorageSync`, `wx.removeStorageSync`, `wx.clearStorageSync`, `wx.onWindowResize`, `wx.offWindowResize`
+**Structure Decision**: 采用 monorepo 多包结构，每个功能模块为独立 npm 包。packages/ 包含 10 个核心包，apps/ 包含 3 个示例项目。
 
 ## Complexity Tracking
 
-> 无宪章违规需要记录。
+> **Fill ONLY if Constitution Check has violations that must be justified**
+
+| Violation | Why Needed | Simpler Alternative Rejected Because |
+|-----------|------------|-------------------------------------|
+| 10 个包 (而非更少) | 功能解耦，按需引入 | 合并会导致无法 tree-shaking，违背包体控制目标 |
+| 平台适配器模式 | 跨平台需求明确 | 条件编译难以维护，适配器更清晰 |
