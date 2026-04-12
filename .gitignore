@@ -9,7 +9,6 @@ build/
 # Environment
 .env*
 !.env.example
-.npmrc
 
 # IDE
 .vscode/
