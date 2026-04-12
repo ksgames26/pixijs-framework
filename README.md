@@ -13,7 +13,8 @@
 - **多平台支持** - Web / 微信小游戏 / 抖音小游戏，平台差异通过适配器抽象
 - **资源管理** - 基于 PixiJS Assets 封装，支持引用计数、自动卸载、AssetPack 分块加载
 - **场景管理** - 完整生命周期（enter/exit/suspend/resume）、过渡动画、资源自动管理
-- **UI 系统** - 独立 UI 层、弹性布局、跨平台一致的渲染
+- **UI 系统** - 独立 UI 层，布局为可选模块
+- **Flexbox 布局** - 基于 @pixi/layout 的弹性布局（可选包）
 - **调试工具** - FPS 监控、资源占用、场景树查看器（开发模式自动注入）
 - **TypeScript** - 完整类型定义，严格模式
 
@@ -34,6 +35,10 @@ npm install @ksgames26/core @ksgames26/assets @ksgames26/scene
 npm install @ksgames26/platform-web      # Web 平台
 npm install @ksgames26/platform-wechat   # 微信小游戏
 npm install @ksgames26/platform-douyin   # 抖音小游戏
+
+# 安装可选包（按需）
+npm install @ksgames26/layout @pixi/layout   # Flexbox 布局
+npm install @ksgames26/spine                  # Spine 动画
 ```
 
 ### 最小示例
@@ -122,6 +127,41 @@ assets.retain('player');   // 引用 +1
 assets.release('player');  // 引用 -1，归零时自动卸载
 ```
 
+### Flexbox 布局（可选）
+
+```typescript
+import { Layout, initLayout } from '@ksgames26/layout';
+import { Layout as PixiLayout } from '@pixi/layout';
+
+// 初始化布局系统
+initLayout(PixiLayout);
+
+// 创建垂直布局
+const layout = new Layout({
+  direction: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: 10,
+  padding: 20,
+});
+
+// 必须先初始化
+layout.init(PixiLayout);
+
+// 添加带布局选项的子元素
+layout.addChildWithLayout(button1, { flexGrow: 1 });
+layout.addChildWithLayout(button2, { flexGrow: 2 });
+
+// 或使用便捷函数
+import { createRowLayout, createColumnLayout, createCenteredLayout } from '@ksgames26/layout';
+
+const row = createRowLayout({ gap: 10 });
+row.init(PixiLayout);
+
+const centered = createCenteredLayout();
+centered.init(PixiLayout);
+```
+
 ## 项目结构
 
 ```
@@ -152,7 +192,10 @@ assets.release('player');  // 引用 -1，归零时自动卸载
 │   │
 │   ├── ui/                   # UI 系统
 │   │   ├── UITier            # UI 分层容器
-│   │   ├── LayoutEngine      # 弹性布局引擎
+│   │   └── components/       # UI 组件
+│   │
+│   ├── layout/               # Flexbox 布局（可选）
+│   │   └── Layout            # 基于 @pixi/layout 的弹性布局
 │   │   └── components/       # UI 组件
 │   │
 │   ├── platform-web/         # Web 平台适配
@@ -175,7 +218,8 @@ assets.release('player');  // 引用 -1，归零时自动卸载
 | `@ksgames26/core` | ~20KB | 应用基类、平台适配、屏幕适配、对象池、工厂模式 |
 | `@ksgames26/assets` | ~15KB | 资源加载、缓存、引用计数、AssetPack 集成 |
 | `@ksgames26/scene` | ~10KB | 场景生命周期、切换管理、过渡动画 |
-| `@ksgames26/ui` | ~12KB | UI 层、布局引擎、组件 |
+| `@ksgames26/ui` | ~8KB | UI 层、组件（布局功能移至独立包） |
+| `@ksgames26/layout` | ~15KB | 基于 @pixi/layout 的 Flexbox 布局（可选） |
 | `@ksgames26/platform-web` | ~5KB | Web 平台适配 |
 | `@ksgames26/platform-wechat` | ~8KB | 微信小游戏适配 |
 | `@ksgames26/platform-douyin` | ~8KB | 抖音小游戏适配 |
@@ -266,9 +310,9 @@ pnpm analyze:douyin         # 分析抖音包体
 - TypeScript 重写，完整类型定义
 - WebGPU 一等公民支持，面向未来
 
-### 为何自建布局系统？
+### 布局系统
 
-PixiJS 官方 `@pixi/layout` 包不存在，`@pixi/ui` 仅提供简单线性布局。游戏框架需要更灵活的弹性布局能力，故自建基于 Flexbox 的布局引擎。
+框架提供独立的 `@ksgames26/layout` 包作为可选布局方案，基于官方 `@pixi/layout` 提供 Flexbox 弹性布局能力。UI 包 (`@ksgames26/ui`) 不再内置布局引擎，开发者可按需安装布局包，保持核心 UI 功能轻量。
 
 ### 平台适配器模式
 

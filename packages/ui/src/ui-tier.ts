@@ -1,11 +1,30 @@
 import { Module } from '@ksgames26/core';
 import { Container } from 'pixi.js';
-import { LayoutEngine } from './layout';
-import type { LayoutProps } from './layout';
 
 /**
  * UI tier module.
  * Manages UI layers that render above game content.
+ *
+ * Note: For layout functionality, install @ksgames26/layout separately.
+ *
+ * @example
+ * ```typescript
+ * import { UITier } from '@ksgames26/ui';
+ * import { Layout, initLayout } from '@ksgames26/layout';
+ * import { Layout as PixiLayout } from '@pixi/layout';
+ *
+ * // Initialize layout system
+ * initLayout(PixiLayout);
+ *
+ * const ui = new UITier();
+ * app.registerModule(ui);
+ *
+ * // Create a UI layer with layout
+ * const menuLayer = ui.addLayer('menu', 10);
+ * const layout = new Layout({ direction: 'column', gap: 10 });
+ * layout.init(PixiLayout);
+ * menuLayer.addChild(layout);
+ * ```
  */
 export class UITier extends Module {
   readonly name = 'ui';
@@ -17,17 +36,11 @@ export class UITier extends Module {
   /** Named UI layers */
   private layers = new Map<string, Container>();
 
-  /** Layout engine */
-  private layoutEngine: LayoutEngine | null = null;
-
   override onEnable(): Promise<void> {
     // Place UI root above all game content
     this.app.pixiApp.stage.addChild(this.root);
     this.root.zIndex = 9999;
     this.root.sortableChildren = true;
-
-    // Initialize layout engine
-    this.layoutEngine = new LayoutEngine(this.root);
 
     return super.onEnable();
   }
@@ -70,16 +83,12 @@ export class UITier extends Module {
   /**
    * Add an element to a specific UI layer.
    */
-  addToLayer(layerName: string, element: Container, layoutProps?: LayoutProps): void {
+  addToLayer(layerName: string, element: Container): void {
     const layer = this.layers.get(layerName);
     if (!layer) {
       throw new Error(`[UITier] Layer "${layerName}" not found`);
     }
     layer.addChild(element);
-
-    if (layoutProps && this.layoutEngine) {
-      this.layoutEngine.addChild(element, layoutProps);
-    }
   }
 
   override onDisable(): void {

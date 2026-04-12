@@ -1,18 +1,18 @@
 {
-  "name": "@ksgames26/ui",
+  "name": "@ksgames26/layout",
   "version": "0.1.0",
-  "description": "UI layer and components for PixiJS game framework",
+  "description": "Flexbox layout for PixiJS using @pixi/layout",
   "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/ksgames26/pixijs-framework.git",
-    "directory": "packages/ui"
+    "directory": "packages/layout"
   },
   "bugs": {
     "url": "https://github.com/ksgames26/pixijs-framework/issues"
   },
-  "homepage": "https://github.com/ksgames26/pixijs-framework/tree/main/packages/ui#readme",
-  "keywords": ["pixi", "pixijs", "game", "framework", "ui"],
+  "homepage": "https://github.com/ksgames26/pixijs-framework/tree/main/packages/layout#readme",
+  "keywords": ["pixi", "pixijs", "layout", "flexbox", "ui"],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -36,18 +36,10 @@
   "publishConfig": { "access": "public" },
   "peerDependencies": {
     "pixi.js": ">=8.0.0",
-    "@ksgames26/core": "workspace:*"
-  },
-  "optionalPeers": {
-    "@ksgames26/layout": {
-      "optional": true
-    },
-    "@pixi/layout": {
-      "optional": true
-    }
+    "@pixi/layout": ">=2.0.0"
   },
   "devDependencies": {
     "pixi.js": "^8.13.0",
-    "@ksgames26/core": "workspace:*"
+    "@pixi/layout": "^2.0.0"
   }
 }
