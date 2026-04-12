@@ -1,0 +1,46 @@
+{
+  "name": "@ksgames26/test-utils",
+  "version": "0.1.0",
+  "description": "Test utilities and mocks for PixiJS game framework",
+  "type": "module",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/pixijs-game-framework.git",
+    "directory": "packages/test-utils"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/pixijs-game-framework/issues"
+  },
+  "homepage": "https://github.com/your-org/pixijs-game-framework/tree/main/packages/test-utils#readme",
+  "keywords": ["pixi", "pixijs", "game", "framework", "test", "utils"],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "pixi.js": ">=8.0.0"
+  },
+  "devDependencies": {
+    "pixi.js": ">=8.0.0",
+    "@ksgames26/core": "workspace:*"
+  }
+}

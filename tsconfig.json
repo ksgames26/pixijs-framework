@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "composite": true,
+    "incremental": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "references": [
+    { "path": "packages/core" },
+    { "path": "packages/assets" },
+    { "path": "packages/scene" },
+    { "path": "packages/ui" },
+    { "path": "packages/spine" },
+    { "path": "packages/debug" },
+    { "path": "packages/platform-web" },
+    { "path": "packages/platform-wechat" },
+    { "path": "packages/platform-douyin" },
+    { "path": "packages/test-utils" }
+  ]
+}

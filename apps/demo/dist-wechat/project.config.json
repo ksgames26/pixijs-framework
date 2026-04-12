@@ -1,0 +1,20 @@
+{
+  "description": "PixiJS Game Framework Demo",
+  "packOptions": {
+    "ignore": []
+  },
+  "setting": {
+    "bundle": false,
+    "es6": true,
+    "enhance": false,
+    "postcss": false,
+    "minified": true,
+    "newFeature": false,
+    "bigPackageSizeSupport": true
+  },
+  "compileType": "game",
+  "libVersion": "latest",
+  "appid": "touristappid",
+  "projectname": "pixi-game-demo",
+  "condition": {}
+}

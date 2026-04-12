@@ -1,0 +1,30 @@
+{
+  "name": "@ksgames26/demo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "build:wechat": "vite build --config vite.config.wechat.ts && node ../../scripts/copy-minigame-assets.js",
+    "build:douyin": "vite build --config vite.config.douyin.ts && node ../../scripts/copy-minigame-assets.js",
+    "build:all": "pnpm build && pnpm build:wechat && pnpm build:douyin"
+  },
+  "dependencies": {
+    "@ksgames26/assets": "workspace:*",
+    "@ksgames26/core": "workspace:*",
+    "@ksgames26/debug": "workspace:*",
+    "@ksgames26/platform-douyin": "workspace:*",
+    "@ksgames26/platform-web": "workspace:*",
+    "@ksgames26/platform-wechat": "workspace:*",
+    "@ksgames26/scene": "workspace:*",
+    "@ksgames26/ui": "workspace:*",
+    "pixi.js": "^8.13.0"
+  },
+  "devDependencies": {
+    "terser": "^5.46.1",
+    "vite": "^6.0.0"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "@ksgames26/my-game",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ksgames26/core": "workspace:*",
+    "@ksgames26/assets": "workspace:*",
+    "@ksgames26/scene": "workspace:*",
+    "@ksgames26/ui": "workspace:*",
+    "@ksgames26/debug": "workspace:*",
+    "@ksgames26/platform-web": "workspace:*",
+    "pixi.js": "^8.13.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}

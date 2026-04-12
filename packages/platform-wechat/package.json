@@ -1,0 +1,45 @@
+{
+  "name": "@ksgames26/platform-wechat",
+  "version": "0.1.0",
+  "description": "WeChat Mini Game platform adapter",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/pixijs-game-framework.git",
+    "directory": "packages/platform-wechat"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/pixijs-game-framework/issues"
+  },
+  "homepage": "https://github.com/your-org/pixijs-game-framework/tree/main/packages/platform-wechat#readme",
+  "keywords": ["pixi", "pixijs", "game", "framework", "platform", "wechat", "minigame"],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "publishConfig": { "access": "public" },
+  "peerDependencies": {
+    "@ksgames26/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@ksgames26/core": "workspace:*"
+  }
+}

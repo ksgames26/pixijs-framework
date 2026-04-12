@@ -1,0 +1,45 @@
+{
+  "name": "@ksgames26/core",
+  "version": "0.1.0",
+  "description": "Core package for PixiJS game framework",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/pixijs-game-framework.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/pixijs-game-framework/issues"
+  },
+  "homepage": "https://github.com/your-org/pixijs-game-framework/tree/main/packages/core#readme",
+  "keywords": ["pixi", "pixijs", "game", "framework", "core"],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "sideEffects": false,
+  "files": ["dist"],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "lint": "eslint src/",
+    "test": "vitest run",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "peerDependencies": {
+    "pixi.js": ">=8.0.0"
+  },
+  "devDependencies": {
+    "pixi.js": "^8.13.0"
+  }
+}

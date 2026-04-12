@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Environment
+.env*
+!.env.example
+.npmrc
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cache
+.cache/
+.turbo/
+.tempo/
+
+# Test coverage
+coverage/
+
+# Lock files (keep pnpm-lock.yaml)
+package-lock.json
+yarn.lock

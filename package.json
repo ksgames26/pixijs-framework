@@ -1,0 +1,53 @@
+{
+  "name": "pixijs-game-framework",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "PixiJS game framework with modular architecture",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"packages/*/src/**/*.ts\" \"apps/*/src/**/*.ts\"",
+    "format:check": "prettier --check \"packages/*/src/**/*.ts\" \"apps/*/src/**/*.ts\"",
+    "test": "turbo run test",
+    "clean": "turbo run clean",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish",
+    "release:npm": "node scripts/release-npm.js publish",
+    "release:alpha": "node scripts/release-npm.js alpha",
+    "release:beta": "node scripts/release-npm.js beta",
+    "release:canary": "node scripts/release-npm.js canary",
+    "release:status": "node scripts/release-npm.js status",
+    "release:dry-run": "node scripts/release-npm.js dry-run",
+    "typecheck": "turbo run typecheck",
+    "build:wechat": "node scripts/build-minigame.js wechat",
+    "build:douyin": "node scripts/build-minigame.js douyin",
+    "release:wechat": "node scripts/release-minigame.js wechat",
+    "release:douyin": "node scripts/release-minigame.js douyin",
+    "release:all": "node scripts/release-minigame.js all",
+    "analyze:wechat": "node scripts/analyze-bundle.js wechat",
+    "analyze:douyin": "node scripts/analyze-bundle.js douyin"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.0",
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.0.0",
+    "turbo": "^2.0.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.0.0",
+    "vite": "^6.0.0",
+    "vite-plugin-dts": "^4.0.0",
+    "vitest": "^3.0.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@types/node": "^25.6.0"
+  }
+}
