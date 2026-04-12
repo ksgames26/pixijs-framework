@@ -162,6 +162,42 @@ const centered = createCenteredLayout();
 centered.init(PixiLayout);
 ```
 
+### Spine 动画（可选）
+
+```typescript
+import { SpineModule, SpineSceneHelper } from '@ksgames26/spine';
+
+// 注册 Spine 模块
+const spine = new SpineModule();
+app.registerModule(spine);
+
+// 在场景中使用
+class GameScene extends Scene {
+  private spineHelper = new SpineSceneHelper(this.stage);
+
+  async onEnter(): Promise<void> {
+    // 加载 Spine 动画
+    const heroAnim = await spine.load('hero', 'spine/hero.json');
+
+    // 添加到场景
+    this.spineHelper.add('hero', heroAnim);
+
+    // 播放动画
+    heroAnim.play('run', true);
+
+    // 监听事件
+    heroAnim.on('complete', (entry) => {
+      console.log('Animation completed:', entry.animation.name);
+    });
+  }
+
+  async onExit(): Promise<void> {
+    // 自动清理所有动画
+    this.spineHelper.destroyAll();
+  }
+}
+```
+
 ## 项目结构
 
 ```
@@ -196,14 +232,17 @@ centered.init(PixiLayout);
 │   │
 │   ├── layout/               # Flexbox 布局（可选）
 │   │   └── Layout            # 基于 @pixi/layout 的弹性布局
-│   │   └── components/       # UI 组件
 │   │
 │   ├── platform-web/         # Web 平台适配
 │   ├── platform-wechat/      # 微信小游戏适配
 │   ├── platform-douyin/      # 抖音小游戏适配
 │   │
 │   ├── debug/                # 调试工具（开发模式）
-│   ├── spine/                # Spine 动画支持（可选）
+│   ├── spine/                # Spine 动画（可选）
+│   │   ├── SpineModule       # 模块入口
+│   │   ├── SpineAnimation    # 动画包装器
+│   │   └── SpineSceneHelper  # 场景集成助手
+│   │
 │   └── test-utils/           # 测试工具
 │
 ├── scripts/                   # 构建和发布脚本
