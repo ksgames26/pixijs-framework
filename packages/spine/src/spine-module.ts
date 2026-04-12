@@ -97,7 +97,7 @@ export class SpineModule extends Module {
    * Unload all animations.
    */
   unloadAll(): void {
-    for (const [key, animation] of this.animations) {
+    for (const [, animation] of this.animations) {
       animation.destroy();
     }
     this.animations.clear();

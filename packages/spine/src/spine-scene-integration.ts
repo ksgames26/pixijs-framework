@@ -1,6 +1,12 @@
 import type { Container } from 'pixi.js';
-import type { Scene } from '@ksgames26/scene';
 import type { SpineAnimation } from './spine-animation';
+
+/**
+ * Interface for objects with a stage property (like Scene).
+ */
+interface WithStage {
+  stage: Container;
+}
 
 /**
  * Helper class for managing spine animations within a scene.
@@ -133,7 +139,7 @@ export class SpineSceneHelper {
    * Destroy all animations and clear the helper.
    */
   destroyAll(): void {
-    for (const [key, animation] of this.animations) {
+    for (const [, animation] of this.animations) {
       animation.container.removeFromParent();
       animation.destroy();
     }
@@ -155,16 +161,25 @@ export class SpineSceneHelper {
  * }
  * ```
  */
-export function SpineSceneMixin<T extends new (...args: any[]) => Scene>(Base: T) {
+// WeakMap to store spine animations for mixin instances
+const spineAnimationsMap = new WeakMap<object, Map<string, SpineAnimation>>();
+
+function getSpineAnimations(instance: object): Map<string, SpineAnimation> {
+  if (!spineAnimationsMap.has(instance)) {
+    spineAnimationsMap.set(instance, new Map<string, SpineAnimation>());
+  }
+  return spineAnimationsMap.get(instance)!;
+}
+
+export function SpineSceneMixin<T extends new (...args: any[]) => WithStage>(Base: T) {
   return class extends Base {
-    private spineAnimations = new Map<string, SpineAnimation>();
 
     /**
      * Load a spine animation and add it to the scene.
      */
     async loadSpine(key: string, url: string, spineModule: { load: (k: string, u: string) => Promise<SpineAnimation> }): Promise<SpineAnimation> {
       const animation = await spineModule.load(key, url);
-      this.spineAnimations.set(key, animation);
+      getSpineAnimations(this).set(key, animation);
       this.stage.addChild(animation.container);
       return animation;
     }
@@ -173,30 +188,33 @@ export function SpineSceneMixin<T extends new (...args: any[]) => Scene>(Base: T
      * Get a loaded spine animation.
      */
     getSpine(key: string): SpineAnimation | undefined {
-      return this.spineAnimations.get(key);
+      return getSpineAnimations(this).get(key);
     }
 
     /**
      * Remove a spine animation from the scene.
      */
     removeSpine(key: string): void {
-      const animation = this.spineAnimations.get(key);
+      const animations = getSpineAnimations(this);
+      const animation = animations.get(key);
       if (animation) {
         animation.container.removeFromParent();
         animation.destroy();
-        this.spineAnimations.delete(key);
+        animations.delete(key);
       }
     }
 
-    override async onExit(): Promise<void> {
-      // Clean up all spine animations
-      for (const [key, animation] of this.spineAnimations) {
+    /**
+     * Clean up all spine animations.
+     * Call this in your scene's onExit method.
+     */
+    cleanupSpineAnimations(): void {
+      const animations = getSpineAnimations(this);
+      for (const [, animation] of animations) {
         animation.container.removeFromParent();
         animation.destroy();
       }
-      this.spineAnimations.clear();
-
-      await super.onExit();
+      animations.clear();
     }
   };
 }

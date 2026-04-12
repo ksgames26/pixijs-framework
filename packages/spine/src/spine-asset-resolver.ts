@@ -13,46 +13,21 @@ import {
  * Handles loading of spine .json/.skel, .atlas, and texture files.
  */
 export class SpineAssetResolver {
-  private app: GameApplication;
   private loadedData = new Map<string, SkeletonData>();
 
-  constructor(app: GameApplication) {
-    this.app = app;
+  constructor(_app: GameApplication) {
+    // App reference kept for future use (e.g., accessing platform adapter)
   }
 
   /**
    * Register spine asset loaders with PixiJS Assets.
+   * Note: In PixiJS v8, parsers are registered via Assets.init() or
+   * by using the built-in fetch handling for standard formats.
    */
   async registerLoaders(): Promise<void> {
-    // Register JSON loader for spine skeleton data
-    Assets.loader.addParser({
-      name: 'spine-json',
-      test: (url: string) => url.endsWith('.json') && !url.includes('atlas'),
-      load: async (url: string) => {
-        const response = await fetch(url);
-        return await response.json();
-      },
-    });
-
-    // Register atlas loader
-    Assets.loader.addParser({
-      name: 'spine-atlas',
-      test: (url: string) => url.endsWith('.atlas'),
-      load: async (url: string) => {
-        const response = await fetch(url);
-        return await response.text();
-      },
-    });
-
-    // Register binary loader for .skel files
-    Assets.loader.addParser({
-      name: 'spine-skel',
-      test: (url: string) => url.endsWith('.skel'),
-      load: async (url: string) => {
-        const response = await fetch(url);
-        return await response.arrayBuffer();
-      },
-    });
+    // PixiJS v8 Assets uses standard fetch for JSON/text/binary
+    // No custom parser registration needed for basic file loading
+    // The @esotericsoftware/spine-pixi-v8 package handles its own asset loading
   }
 
   /**

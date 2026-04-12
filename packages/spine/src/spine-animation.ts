@@ -1,5 +1,5 @@
 import { Spine } from '@esotericsoftware/spine-pixi-v8';
-import type { SkeletonData, AnimationStateListener, TrackEntry } from '@esotericsoftware/spine-pixi-v8';
+import type { SkeletonData, TrackEntry } from '@esotericsoftware/spine-pixi-v8';
 
 /**
  * Animation state event types.
@@ -169,14 +169,14 @@ export class SpineAnimation {
    * Get available animation names.
    */
   getAnimationNames(): string[] {
-    return this.skeletonData.animations.map(a => a.name);
+    return this.skeletonData.animations.map((a: { name: string }) => a.name);
   }
 
   /**
    * Get available skin names.
    */
   getSkinNames(): string[] {
-    return this.skeletonData.skins.map(s => s.name);
+    return this.skeletonData.skins.map((s: { name: string }) => s.name);
   }
 
   /**
@@ -186,7 +186,8 @@ export class SpineAnimation {
    * @param attachmentName - Attachment name (null to clear)
    */
   setAttachment(slotName: string, attachmentName: string | null): void {
-    this.spine.skeleton.setAttachment(slotName, attachmentName);
+    // Use type assertion since Spine API accepts null but type definition may not reflect it
+    this.spine.skeleton.setAttachment(slotName, attachmentName as string);
   }
 
   /**
@@ -213,7 +214,9 @@ export class SpineAnimation {
    * @param duration - Mix duration in seconds
    */
   setMix(fromAnimation: string, toAnimation: string, duration: number): void {
-    this.spine.stateData.setMix(fromAnimation, toAnimation, duration);
+    // Access the AnimationStateData through the state
+    const stateData = (this.spine.state as unknown as { data: { setMix: (from: string, to: string, duration: number) => void } }).data;
+    stateData.setMix(fromAnimation, toAnimation, duration);
   }
 
   /**
@@ -312,12 +315,12 @@ export class SpineAnimation {
     const state = this.spine.state;
 
     state.addListener({
-      start: (entry) => this.emit('start', entry),
-      interrupt: (entry) => this.emit('interrupt', entry),
-      end: (entry) => this.emit('end', entry),
-      complete: (entry) => this.emit('complete', entry),
-      dispose: (entry) => this.emit('dispose', entry),
-      event: (entry, event) => this.emit('event', entry, event),
+      start: (entry: TrackEntry) => this.emit('start', entry),
+      interrupt: (entry: TrackEntry) => this.emit('interrupt', entry),
+      end: (entry: TrackEntry) => this.emit('end', entry),
+      complete: (entry: TrackEntry) => this.emit('complete', entry),
+      dispose: (entry: TrackEntry) => this.emit('dispose', entry),
+      event: (entry: TrackEntry, event: unknown) => this.emit('event', entry, event),
     });
   }
 
