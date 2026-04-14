@@ -3,9 +3,9 @@
  * Injects browser-compatible globals into the Douyin mini-game environment
  */
 
-/// <reference path="./types/tt.d.ts" />
 
-declare const tt: TT.TTAPI;
+
+
 declare const GameGlobal: typeof globalThis & {
   __isAdapterInjected?: boolean;
   screencanvas?: HTMLCanvasElement;

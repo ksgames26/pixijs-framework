@@ -1,4 +1,4 @@
-/// <reference path="../types/tt.d.ts" />
+
 
 import { Element } from './Element';
 import { parentNode } from '../util/parent-node';

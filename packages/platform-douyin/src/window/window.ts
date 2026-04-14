@@ -1,8 +1,8 @@
 // Imports for type references
 import type { TouchEvent } from '../event/TouchEvent';
 
-/// <reference path="../types/tt.d.ts" />
-declare const tt: TT.TTAPI;
+
+
 
 import { navigator } from '../navigator/navigator';
 import { location } from './location';

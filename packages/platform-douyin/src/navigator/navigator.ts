@@ -1,8 +1,8 @@
 import { noop } from '../util/noop';
 
-/// <reference path="../types/tt.d.ts" />
 
-declare const tt: TT.TTAPI;
+
+
 
 /**
  * Navigator object

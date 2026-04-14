@@ -1,6 +1,6 @@
-/// <reference path="../types/tt.d.ts" />
 
-declare const tt: TT.TTAPI;
+
+
 
 const _socketTask = new WeakMap<WebSocket, TT.SocketTask>();
 

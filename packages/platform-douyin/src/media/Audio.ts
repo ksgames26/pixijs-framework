@@ -1,9 +1,9 @@
 import { HTMLAudioElement } from './HTMLAudioElement';
 import { Event } from '../event/Event';
 
-/// <reference path="../types/tt.d.ts" />
 
-declare const tt: TT.TTAPI;
+
+
 
 let SN_SEED = 1;
 const _innerAudioContextMap: Record<number, TT.InnerAudioContext> = {};

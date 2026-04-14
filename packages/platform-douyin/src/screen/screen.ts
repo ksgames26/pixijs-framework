@@ -3,8 +3,8 @@
  * Provides screen dimensions information
  */
 
-/// <reference path="../types/tt.d.ts" />
-declare const tt: TT.TTAPI;
+
+
 
 const systemInfo = tt.getSystemInfoSync();
 const screenWidth = systemInfo.screenWidth;

@@ -1,6 +1,6 @@
-/// <reference path="../types/tt.d.ts" />
 
-declare const tt: TT.TTAPI;
+
+
 
 import { Event } from '../event/Event';
 import { TouchEvent } from '../event/TouchEvent';

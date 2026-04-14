@@ -2,9 +2,9 @@
  * Cached system info to avoid repeated calls to tt.getSystemInfoSync()
  */
 
-/// <reference path="../types/tt.d.ts" />
 
-declare const tt: TT.TTAPI;
+
+
 
 const systemInfo = tt.getSystemInfoSync();
 

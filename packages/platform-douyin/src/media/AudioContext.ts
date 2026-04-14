@@ -6,9 +6,9 @@
  * through the Audio interface while also providing Web Audio API methods.
  */
 
-/// <reference path="../types/tt.d.ts" />
 
-declare const tt: TT.TTAPI;
+
+
 
 import { Audio } from './Audio';
 

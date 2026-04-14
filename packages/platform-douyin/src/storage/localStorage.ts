@@ -3,8 +3,8 @@
  * Maps to tt storage APIs
  */
 
-/// <reference path="../types/tt.d.ts" />
-declare const tt: TT.TTAPI;
+
+
 
 export const localStorage: Storage = {
   get length(): number {

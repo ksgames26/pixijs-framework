@@ -1,4 +1,4 @@
-export function Image(): any {
+export function Image() {
   const image = wx.createImage();
   return image;
 }

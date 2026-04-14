@@ -6,7 +6,7 @@ import { classList } from '../util/class-list';
  * Wraps tt.createImage() for DOM compatibility
  */
 
-declare const tt: TT.TTAPI;
+
 
 export function Image(): HTMLImageElement {
   const image = tt.createImage();

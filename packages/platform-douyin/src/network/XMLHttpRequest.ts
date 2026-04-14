@@ -1,7 +1,7 @@
 import { EventTarget } from '../event/EventTarget';
 
-/// <reference path="../types/tt.d.ts" />
-declare const tt: TT.TTAPI;
+
+
 
 /**
  * XMLHttpRequest class

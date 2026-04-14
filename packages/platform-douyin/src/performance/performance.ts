@@ -3,8 +3,8 @@
  * Provides performance timing interface
  */
 
-/// <reference path="../types/tt.d.ts" />
-declare const tt: TT.TTAPI;
+
+
 
 let performanceImpl: any;
 

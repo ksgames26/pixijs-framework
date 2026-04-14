@@ -3,8 +3,8 @@
  * Wraps tt.createWorker() for Web Worker API compatibility
  */
 
-/// <reference path="../types/tt.d.ts" />
-declare const tt: TT.TTAPI;
+
+
 
 export class Worker {
   static previousWorker: Worker | null = null;
