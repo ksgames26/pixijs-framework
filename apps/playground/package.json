@@ -10,12 +10,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@ksgames26/core": "workspace:*",
     "@ksgames26/assets": "workspace:*",
-    "@ksgames26/scene": "workspace:*",
-    "@ksgames26/ui": "workspace:*",
+    "@ksgames26/core": "workspace:*",
     "@ksgames26/debug": "workspace:*",
     "@ksgames26/platform-web": "workspace:*",
+    "@ksgames26/scene": "workspace:*",
+    "@ksgames26/ui": "workspace:*",
+    "@pixi/colord": "^2.9.6",
+    "@xmldom/xmldom": "^0.9.9",
+    "earcut": "^3.0.2",
+    "eventemitter3": "^5.0.4",
     "pixi.js": "^8.13.0"
   },
   "devDependencies": {

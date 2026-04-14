@@ -11,7 +11,7 @@ export default defineConfig({
       fileName: (format) => `index.${format === 'es' ? 'js' : 'cjs'}`,
     },
     rollupOptions: {
-      external: [/^pixi\.js/, /^@pixi\//, /^@ksgames26\//],
+      external: [/^pixi\.js/, /^@pixi\//, /^@ksgames26\//, /^@esotericsoftware\/spine/],
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',

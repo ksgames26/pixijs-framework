@@ -92,14 +92,12 @@ export interface ChildLayoutOptions {
   margin?: number | { top?: number; right?: number; bottom?: number; left?: number };
 }
 
-let LayoutClass: typeof PixiLayout | null = null;
-
 /**
  * Initialize the layout system with @pixi/layout.
  * Call this before using Layout.
  */
-export function initLayout(pixiLayoutModule: typeof PixiLayout): void {
-  LayoutClass = pixiLayoutModule;
+export function initLayout(_pixiLayoutModule: typeof PixiLayout): void {
+  // Layout module is now used directly via init() method on Layout instances
 }
 
 /**
@@ -139,8 +137,6 @@ export class Layout extends Container {
    */
   init(LayoutConstructor: typeof PixiLayout): void {
     if (this.layoutContainer) return;
-
-    LayoutClass = LayoutConstructor;
 
     const pixiOptions = this.convertOptions(this.options);
     this.layoutContainer = new LayoutConstructor(pixiOptions);
