@@ -1,4 +1,4 @@
-/// <reference path="../types/wx.d.ts" />
+
 
 let performanceImpl: any;
 

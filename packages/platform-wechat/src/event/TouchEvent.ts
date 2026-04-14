@@ -1,11 +1,11 @@
-/// <reference path="../types/wx.d.ts" />
+
 
 import { Event } from './Event';
 
 export class TouchEvent extends Event {
-  public touches: WX.Touch[];
-  public targetTouches: WX.Touch[];
-  public changedTouches: WX.Touch[];
+  public touches: WechatMinigame.Touch[];
+  public targetTouches: WechatMinigame.Touch[];
+  public changedTouches: WechatMinigame.Touch[];
 
   constructor(type: string) {
     super(type);
@@ -19,8 +19,8 @@ export class TouchEvent extends Event {
   }
 }
 
-export function touchEventHandlerFactory(type: string): (event: WX.TouchEvent) => void {
-  return (event: WX.TouchEvent) => {
+export function touchEventHandlerFactory(type: string): (event: WechatMinigame.OnTouchStartListenerResult) => void {
+  return (event: WechatMinigame.OnTouchStartListenerResult) => {
     const touchEvent = new TouchEvent(type);
 
     touchEvent.touches = event.touches;

@@ -1,6 +1,4 @@
-/// <reference path="../types/wx.d.ts" />
-
-export function Image(): HTMLImageElement {
+export function Image(): any {
   const image = wx.createImage();
   return image;
 }

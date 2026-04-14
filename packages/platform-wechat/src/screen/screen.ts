@@ -1,4 +1,4 @@
-/// <reference path="../types/wx.d.ts" />
+
 
 const systemInfo = wx.getSystemInfoSync();
 const screenWidth = systemInfo.screenWidth;

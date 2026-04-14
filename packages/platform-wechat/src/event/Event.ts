@@ -1,4 +1,4 @@
-/// <reference path="../types/wx.d.ts" />
+
 
 import { noop } from '../util/noop';
 

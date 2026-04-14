@@ -1,4 +1,4 @@
-/// <reference path="../types/wx.d.ts" />
+
 
 export const localStorage: Storage = {
   get length(): number {

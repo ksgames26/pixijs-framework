@@ -1,4 +1,4 @@
-/// <reference path="./types/wx.d.ts" />
+
 
 declare const GameGlobal: typeof globalThis & {
   __isAdapterInjected?: boolean;

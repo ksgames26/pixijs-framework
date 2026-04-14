@@ -1,4 +1,4 @@
-/// <reference path="./types/wx.d.ts" />
+
 
 import type { StorageLike } from '@ksgames26/core';
 

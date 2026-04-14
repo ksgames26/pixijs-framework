@@ -1,4 +1,4 @@
-/// <reference path="../types/wx.d.ts" />
+
 
 import { navigator } from '../navigator/navigator';
 import { location } from './location';

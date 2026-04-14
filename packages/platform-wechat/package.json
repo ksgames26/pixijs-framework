@@ -12,7 +12,15 @@
     "url": "https://github.com/your-org/pixijs-game-framework/issues"
   },
   "homepage": "https://github.com/your-org/pixijs-game-framework/tree/main/packages/platform-wechat#readme",
-  "keywords": ["pixi", "pixijs", "game", "framework", "platform", "wechat", "minigame"],
+  "keywords": [
+    "pixi",
+    "pixijs",
+    "game",
+    "framework",
+    "platform",
+    "wechat",
+    "minigame"
+  ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -35,11 +43,14 @@
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit"
   },
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "access": "public"
+  },
   "peerDependencies": {
     "@ksgames26/core": "workspace:*"
   },
   "devDependencies": {
-    "@ksgames26/core": "workspace:*"
+    "@ksgames26/core": "workspace:*",
+    "minigame-api-typings": "^3.8.19"
   }
 }

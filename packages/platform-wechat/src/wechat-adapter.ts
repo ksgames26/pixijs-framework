@@ -1,4 +1,4 @@
-/// <reference path="./types/wx.d.ts" />
+
 
 import type { PlatformAdapter, StorageLike, SystemInfo } from '@ksgames26/core';
 import { WechatStorage } from './wechat-storage';
@@ -86,7 +86,7 @@ export class WechatAdapter implements PlatformAdapter {
   }
 
   onResize(callback: (width: number, height: number) => void): () => void {
-    const handler = (res: WX.WindowResizeEvent) => {
+    const handler = (res: WechatMinigame.OnWindowResizeListenerResult) => {
       callback(res.windowWidth, res.windowHeight);
     };
     wx.onWindowResize(handler);

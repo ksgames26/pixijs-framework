@@ -1,4 +1,4 @@
-/// <reference path="../types/wx.d.ts" />
+
 
 import { HTMLAudioElement } from '../dom/HTMLAudioElement';
 
@@ -8,7 +8,7 @@ const HAVE_CURRENT_DATA = 2;
 const HAVE_FUTURE_DATA = 3;
 const HAVE_ENOUGH_DATA = 4;
 
-const _innerAudioContext = new WeakMap<Audio, WX.InnerAudioContext>();
+const _innerAudioContext = new WeakMap<Audio, WechatMinigame.InnerAudioContext>();
 const _src = new WeakMap<Audio, string>();
 
 export class Audio extends HTMLAudioElement {

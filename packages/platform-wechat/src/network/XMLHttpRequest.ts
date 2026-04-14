@@ -1,10 +1,10 @@
-/// <reference path="../types/wx.d.ts" />
+
 
 const _url = new WeakMap<XMLHttpRequest, string>();
 const _method = new WeakMap<XMLHttpRequest, string>();
 const _requestHeader = new WeakMap<XMLHttpRequest, Record<string, string>>();
 const _responseHeader = new WeakMap<XMLHttpRequest, Record<string, string>>();
-const _requestTask = new WeakMap<XMLHttpRequest, WX.RequestTask>();
+const _requestTask = new WeakMap<XMLHttpRequest, WechatMinigame.RequestTask>();
 
 function _triggerEvent(xhr: XMLHttpRequest, type: string, ...args: any[]): void {
   const handler = (xhr as any)[`on${type}`];
@@ -91,7 +91,7 @@ export class XMLHttpRequest {
       method: _method.get(this)! as any,
       header: _requestHeader.get(this)!,
       responseType: this.responseType as 'text' | 'arraybuffer',
-      success: (res: WX.RequestSuccessCallback) => {
+      success: (res: WechatMinigame.RequestSuccessCallbackResult) => {
         let responseData: any = res.data;
 
         if (typeof responseData !== 'string' && !(responseData instanceof ArrayBuffer)) {

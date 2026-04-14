@@ -1,6 +1,6 @@
-/// <reference path="../types/wx.d.ts" />
 
-const _socketTask = new WeakMap<WebSocket, WX.SocketTask>();
+
+const _socketTask = new WeakMap<WebSocket, WechatMinigame.SocketTask>();
 
 export class WebSocket {
   static readonly CONNECTING = 0;
