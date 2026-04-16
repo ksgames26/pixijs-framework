@@ -52,12 +52,6 @@ interface Window {
   addEventListener: (type: string, listener: any) => void;
   removeEventListener: (type: string, listener: any) => void;
   dispatchEvent: (event: any) => boolean;
-  setTimeout: (handler: TimerHandler, timeout?: number, ...args: any[]) => number;
-  clearTimeout: (id: number | undefined) => void;
-  setInterval: (handler: TimerHandler, timeout?: number, ...args: any[]) => number;
-  clearInterval: (id: number | undefined) => void;
-  requestAnimationFrame: (callback: FrameRequestCallback) => number;
-  cancelAnimationFrame: (id: number) => void;
 }
 
 export const window: Window = {
@@ -125,25 +119,6 @@ export const window: Window = {
     document.dispatchEvent(event);
     return true;
   },
-
-  // Global timer functions
-  setTimeout: (
-    handler: TimerHandler,
-    timeout?: number,
-    ...args: any[]
-  ): number => setTimeout(handler, timeout, ...args),
-  clearTimeout: (id: number | undefined): void => clearTimeout(id),
-  setInterval: (
-    handler: TimerHandler,
-    timeout?: number,
-    ...args: any[]
-  ): number => setInterval(handler, timeout, ...args),
-  clearInterval: (id: number | undefined): void => clearInterval(id),
-
-  // Animation frame functions
-  requestAnimationFrame: (callback: FrameRequestCallback): number =>
-    requestAnimationFrame(callback),
-  cancelAnimationFrame: (id: number): void => cancelAnimationFrame(id),
 };
 
 export default window;

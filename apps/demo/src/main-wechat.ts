@@ -2,6 +2,10 @@
  * WeChat Mini Game Entry
  * Auto-generated - Do not edit directly
  */
+import 'pixi.js/unsafe-eval'; // Polyfill for unsafe eval in mini game platform
+import { inject } from '@ksgames26/platform-wechat';
+inject(); // Manually inject WeChat adapter environment
+
 import { GameApplication } from '@ksgames26/core';
 import { WechatAdapter } from '@ksgames26/platform-wechat';
 import { initGame } from './game-init';
@@ -12,6 +16,7 @@ async function main() {
   const game = new GameApplication();
   await game.init({
     platformAdapter: adapter,
+    canvas: adapter.createCanvas(),
     debug: false,
   });
 

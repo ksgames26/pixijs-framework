@@ -51,4 +51,20 @@ export default class HTMLElement extends Element {
   focus() {
     
   }
+
+  blur() {
+
+  }
+
+  appendChild(_node) {
+
+  }
+
+  removeChild(_node) {
+    return null
+  }
+
+  remove() {
+
+  }
 }

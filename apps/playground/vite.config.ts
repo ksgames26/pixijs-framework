@@ -5,7 +5,4 @@ export default defineConfig({
     port: 3002,
     open: true,
   },
-  resolve: {
-    preserveSymlinks: true,
-  },
 });

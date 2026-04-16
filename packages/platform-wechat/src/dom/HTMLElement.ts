@@ -44,6 +44,23 @@ export class HTMLElement extends Element {
   focus(): void {
     // No-op
   }
+
+  blur(): void {
+    // No-op
+  }
+
+  appendChild(_node: any): void {
+    // No-op
+  }
+
+  removeChild(_node: any): any {
+    // No-op
+    return null;
+  }
+
+  remove(): void {
+    // No-op
+  }
 }
 
 export default HTMLElement;

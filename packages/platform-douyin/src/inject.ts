@@ -10,6 +10,7 @@ declare const GameGlobal: typeof globalThis & {
   __isAdapterInjected?: boolean;
   screencanvas?: HTMLCanvasElement;
   global?: typeof globalThis;
+  CanvasRenderingContext2D?: any;
 };
 
 import { Event } from './event/Event';
@@ -65,6 +66,15 @@ export function inject(): void {
     return;
   }
   GameGlobal.__isAdapterInjected = true;
+
+  // Inject CanvasRenderingContext2D if not exists
+  const tempCanvas = tt.createCanvas();
+  if (!GameGlobal.CanvasRenderingContext2D && tempCanvas.getContext) {
+    const ctx2d = tempCanvas.getContext('2d');
+    if (ctx2d) {
+      GameGlobal.CanvasRenderingContext2D = ctx2d.constructor;
+    }
+  }
 
   // Set up window object
   const windowObj: any = {
@@ -163,11 +173,13 @@ export function inject(): void {
   GameGlobal.global = GameGlobal.global || global;
 
   const systemInfo = tt.getSystemInfoSync();
+  const circularProps = ['window', 'self', 'top', 'parent'];
 
   // Check if running in devtools
   if (typeof (globalThis as any).__devtoolssubcontext === 'undefined' && systemInfo.platform === 'devtools') {
     // In devtools, inject into actual window object
     for (const key of Object.keys(windowObj)) {
+      if (circularProps.includes(key)) continue;
       const descriptor = Object.getOwnPropertyDescriptor((globalThis as any), key);
       if (!descriptor || descriptor.configurable === true) {
         Object.defineProperty(globalThis, key, {
@@ -189,19 +201,49 @@ export function inject(): void {
       }
     }
 
-    (globalThis as any).parent = globalThis;
+    circularProps.forEach(key => {
+      try {
+        const descriptor = Object.getOwnPropertyDescriptor(globalThis as any, key);
+        if (!descriptor || descriptor.configurable) {
+          Object.defineProperty(globalThis, key, {
+            value: key === 'window' ? windowObj : globalThis,
+            configurable: true,
+            writable: true
+          });
+        }
+      } catch (e) {
+        // ignore
+      }
+    });
+
     (globalThis as any).tt = tt;
   } else {
     // In production mini-game environment
     (windowObj as any).tt = tt;
 
     for (const key of Object.keys(windowObj)) {
-      (GameGlobal as any)[key] = (windowObj as any)[key];
+      if (circularProps.includes(key)) continue;
+      try {
+        (GameGlobal as any)[key] = (windowObj as any)[key];
+      } catch (e) {
+        // ignore
+      }
     }
 
-    (GameGlobal as any).window = GameGlobal;
-    (GameGlobal as any).top = GameGlobal;
-    (GameGlobal as any).parent = GameGlobal;
+    circularProps.forEach(key => {
+      try {
+        const descriptor = Object.getOwnPropertyDescriptor(GameGlobal as any, key);
+        if (!descriptor || descriptor.configurable) {
+          Object.defineProperty(GameGlobal, key, {
+            value: key === 'window' ? windowObj : GameGlobal,
+            configurable: true,
+            writable: true
+          });
+        }
+      } catch (e) {
+        // ignore
+      }
+    });
   }
 
   // Set up screencanvas

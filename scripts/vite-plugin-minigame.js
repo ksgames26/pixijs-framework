@@ -157,7 +157,7 @@ export function minigamePlugin(options = {}) {
               },
               compileType: 'game',
               libVersion: 'latest',
-              appid: 'touristappid',
+              appid: 'wx26e27d2a7d0d17d0',
               projectname: 'pixi-game',
               condition: {},
             },

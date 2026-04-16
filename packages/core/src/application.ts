@@ -72,6 +72,7 @@ export class GameApplication {
 
     // Initialize PixiJS v8 Application (async)
     await this.pixiApp.init({
+      canvas: config.canvas || (globalThis as any).canvas,
       width: config.width ?? sysInfo.screenWidth,
       height: config.height ?? sysInfo.screenHeight,
       backgroundColor: config.backgroundColor ?? 0x000000,

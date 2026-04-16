@@ -25,6 +25,9 @@ export interface GameConfig {
   /** Platform adapter instance. Required for mini-game platforms (WeChat/Douyin) */
   platformAdapter?: PlatformAdapter;
 
+  /** HTML Canvas element to use for rendering */
+  canvas?: HTMLCanvasElement;
+
   /** Development debug mode, defaults to false */
   debug?: boolean;
 

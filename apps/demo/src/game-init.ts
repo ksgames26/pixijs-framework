@@ -8,7 +8,7 @@ import type { PlatformAdapter } from '@ksgames26/core';
 
 export async function initGame(
   game: GameApplication,
-  adapter: PlatformAdapter
+  _adapter: PlatformAdapter
 ): Promise<void> {
   console.log('[Game] Initializing...');
 
@@ -27,6 +27,8 @@ export async function initGame(
   });
   title.anchor.set(0.5);
   scene.addChild(title);
+
+  console.log('[Game] Title text created');
 
   // Add to stage
   game.pixiApp.stage.addChild(scene);

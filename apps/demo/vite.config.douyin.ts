@@ -31,12 +31,7 @@ export default defineConfig({
     },
   },
   resolve: {
-    preserveSymlinks: true,
     alias: {
-      'pixi.js': path.resolve(
-        __dirname,
-        '../../node_modules/.pnpm/pixi.js@8.17.1/node_modules/pixi.js/lib/index.mjs'
-      ),
     },
   },
 });

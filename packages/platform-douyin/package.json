@@ -31,7 +31,11 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "./src/inject.ts",
+    "./dist/index.js",
+    "./dist/index.cjs"
+  ],
   "files": [
     "dist"
   ],
