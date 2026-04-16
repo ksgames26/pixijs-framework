@@ -2,19 +2,12 @@
 
 import { HTMLElement } from './HTMLElement';
 
-let hasModifiedCanvasPrototype = false;
-
 export function enhanceCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
   const enhancedCanvas = canvas as any;
 
   enhancedCanvas.type = 'canvas';
 
-  // Inject HTMLElement prototype chain once for native mini-game canvas objects.
-  if (!hasModifiedCanvasPrototype) {
-    hasModifiedCanvasPrototype = true;
-    const htmlElementInstance = new HTMLElement('canvas');
-    enhancedCanvas.__proto__.__proto__ = htmlElementInstance;
-  }
+  enhancedCanvas.__proto__.__proto__ = new HTMLElement('canvas');
 
   enhancedCanvas.getBoundingClientRect = () => {
     return {
