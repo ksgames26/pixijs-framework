@@ -54,8 +54,7 @@ function generateEntryFile(platform, appSrcDir, outputDir) {
  */
 import 'pixi.js/unsafe-eval'; // Polyfill for unsafe eval in mini game platform
 import { inject } from '${config.adapterImport}';
-inject(); // Manually inject adapter environment
-
+inject(); // Ensure adapter globals are injected before app startup
 import { GameApplication } from '@ksgames26/core';
 import { ${config.adapter} } from '${config.adapterImport}';
 import { initGame } from './game-init';

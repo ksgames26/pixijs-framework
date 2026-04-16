@@ -4,8 +4,7 @@
  */
 import 'pixi.js/unsafe-eval'; // Polyfill for unsafe eval in mini game platform
 import { inject } from '@ksgames26/platform-wechat';
-inject(); // Manually inject WeChat adapter environment
-
+inject(); // Ensure adapter globals are injected before app startup
 import { GameApplication } from '@ksgames26/core';
 import { WechatAdapter } from '@ksgames26/platform-wechat';
 import { initGame } from './game-init';

@@ -13,12 +13,8 @@ import { focus } from './focus';
 import { blur } from './blur';
 import { matchMedia } from '../screen/matchMedia';
 import { document } from '../dom/document';
-import { Canvas } from '../dom/Canvas';
 
 const systemInfo = wx.getSystemInfoSync();
-
-// Create canvas singleton
-const canvas = Canvas();
 
 // Define Window interface to avoid circular reference issues
 interface Window {
@@ -90,7 +86,7 @@ export const window: Window = {
   ontouchend: null as any,
 
   // Canvas
-  canvas,
+  canvas: null as any,
 
   // Self reference
   get self() {

@@ -13,6 +13,10 @@ const events: Record<string, Array<(event: any) => void>> = {};
 // Canvas singleton
 let _canvas: any = null;
 
+export function setCanvas(canvas: HTMLCanvasElement): void {
+  _canvas = canvas;
+}
+
 interface Document {
   readyState: 'complete';
   visibilityState: 'visible';
@@ -153,4 +157,4 @@ export default document;
 // Set documentElement and _canvas after window is created to avoid circular reference
 import { window as _win } from '../window/window';
 document.documentElement = _win;
-_canvas = _win.canvas;
+setCanvas(_win.canvas);

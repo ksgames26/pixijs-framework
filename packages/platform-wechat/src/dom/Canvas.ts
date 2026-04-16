@@ -4,19 +4,19 @@ import { HTMLElement } from './HTMLElement';
 
 let hasModifiedCanvasPrototype = false;
 
-export function Canvas(): HTMLCanvasElement {
-  const canvas = wx.createCanvas() as any;
+export function enhanceCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
+  const enhancedCanvas = canvas as any;
 
-  canvas.type = 'canvas';
+  enhancedCanvas.type = 'canvas';
 
-  // Inject HTMLElement prototype chain
+  // Inject HTMLElement prototype chain once for native mini-game canvas objects.
   if (!hasModifiedCanvasPrototype) {
     hasModifiedCanvasPrototype = true;
     const htmlElementInstance = new HTMLElement('canvas');
-    canvas.__proto__.__proto__ = htmlElementInstance;
+    enhancedCanvas.__proto__.__proto__ = htmlElementInstance;
   }
 
-  canvas.getBoundingClientRect = () => {
+  enhancedCanvas.getBoundingClientRect = () => {
     return {
       top: 0,
       left: 0,
@@ -25,7 +25,11 @@ export function Canvas(): HTMLCanvasElement {
     };
   };
 
-  return canvas;
+  return enhancedCanvas;
+}
+
+export function Canvas(): HTMLCanvasElement {
+  return enhanceCanvas(wx.createCanvas() as unknown as HTMLCanvasElement);
 }
 
 export default Canvas;

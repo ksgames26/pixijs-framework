@@ -8,10 +8,16 @@ declare const GameGlobal: typeof globalThis & {
   WebGLRenderingContext?: any;
 };
 
+import { enhanceCanvas } from './dom/Canvas';
+import { document, setCanvas } from './dom/document';
 import { window as _window } from './window/window';
-import { document } from './dom/document';
 
 export function inject(): void {
+  if (GameGlobal.__isAdapterInjected) {
+    return;
+  }
+  GameGlobal.__isAdapterInjected = true;
+
   console.log('[Inject] Injecting...');
 
   _window.addEventListener = (type: string, listener: any) => {
@@ -29,16 +35,31 @@ export function inject(): void {
   const { platform } = wx.getSystemInfoSync();
   const global = GameGlobal;
 
+  console.log('[Inject] Platform:', platform);
+
+  // Reuse the first native canvas as the shared onscreen canvas for rendering.
+  const tempCanvas = GameGlobal.screencanvas
+    ? enhanceCanvas(GameGlobal.screencanvas)
+    : enhanceCanvas(wx.createCanvas() as unknown as HTMLCanvasElement);
+  GameGlobal.screencanvas = tempCanvas;
+  (_window as any).canvas = tempCanvas;
+  (global as any).canvas = tempCanvas;
+  setCanvas(tempCanvas);
+
+  console.log('[Inject] Canvas:', tempCanvas);
+
   // Inject CanvasRenderingContext2D and WebGLRenderingContext if not exists
-  const tempCanvas = wx.createCanvas();
-  if (!global.CanvasRenderingContext2D && tempCanvas.getContext) {
-    const ctx2d = tempCanvas.getContext('2d');
+  // We MUST use a separate dummy canvas to extract constructors! 
+  // Calling getContext('2d') on the main tempCanvas will permanently lock it out of WebGL mode!
+  const dummyCanvas = wx.createCanvas();
+  if (!global.CanvasRenderingContext2D && dummyCanvas.getContext) {
+    const ctx2d = dummyCanvas.getContext('2d');
     if (ctx2d) {
       global.CanvasRenderingContext2D = ctx2d.constructor;
     }
   }
-  if (!global.WebGLRenderingContext && tempCanvas.getContext) {
-    const gl = tempCanvas.getContext('webgl');
+  if (!global.WebGLRenderingContext && dummyCanvas.getContext) {
+    const gl = dummyCanvas.getContext('webgl');
     if (gl) {
       global.WebGLRenderingContext = gl.constructor;
     }
@@ -93,7 +114,7 @@ export function inject(): void {
         // ignore
       }
     }
-    
+
     circularProps.forEach(key => {
       try {
         const descriptor = Object.getOwnPropertyDescriptor(global as any, key);
@@ -111,10 +132,7 @@ export function inject(): void {
   }
 }
 
-// Auto-inject if not already done
-if (!GameGlobal.__isAdapterInjected) {
-  GameGlobal.__isAdapterInjected = true;
-  inject();
-}
+// Auto-inject on first import.
+inject();
 
 export default inject;

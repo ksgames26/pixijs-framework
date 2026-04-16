@@ -3,13 +3,17 @@
 import type { PlatformAdapter, StorageLike, SystemInfo } from '@ksgames26/core';
 import { WechatStorage } from './wechat-storage';
 
+declare const GameGlobal: typeof globalThis & {
+  screencanvas?: HTMLCanvasElement;
+};
+
 /**
  * WeChat Mini Game platform adapter.
  * Wraps wx.* APIs to conform to PlatformAdapter interface.
  */
 export class WechatAdapter implements PlatformAdapter {
   createCanvas(): HTMLCanvasElement {
-    return wx.createCanvas() as unknown as HTMLCanvasElement;
+    return (GameGlobal.screencanvas || (globalThis as any).canvas || wx.createCanvas()) as HTMLCanvasElement;
   }
 
   createImage(): HTMLImageElement {
