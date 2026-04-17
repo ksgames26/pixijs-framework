@@ -11,7 +11,8 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
 
-const platforms = ['wechat', 'douyin'];
+const requestedPlatform = process.argv[3];
+const platforms = requestedPlatform ? [requestedPlatform] : ['wechat', 'douyin'];
 
 function copyConfigFiles(appDir, platform) {
   const distDir = path.join(appDir, `dist-${platform}`);
@@ -46,7 +47,7 @@ function copyConfigFiles(appDir, platform) {
 
 // Main
 const appPath = process.argv[2] || 'apps/demo';
-const appDir = path.resolve(rootDir, appPath);
+const appDir = path.resolve(process.cwd(), appPath);
 
 platforms.forEach((platform) => {
   copyConfigFiles(appDir, platform);

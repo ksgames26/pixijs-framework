@@ -51,15 +51,17 @@ export function inject(): void {
   // Inject CanvasRenderingContext2D and WebGLRenderingContext if not exists
   // We MUST use a separate dummy canvas to extract constructors! 
   // Calling getContext('2d') on the main tempCanvas will permanently lock it out of WebGL mode!
-  const dummyCanvas = wx.createCanvas();
-  if (!global.CanvasRenderingContext2D && dummyCanvas.getContext) {
-    const ctx2d = dummyCanvas.getContext('2d');
+  const dummyCanvas2D = wx.createCanvas();
+  if (!global.CanvasRenderingContext2D && dummyCanvas2D.getContext) {
+    const ctx2d = dummyCanvas2D.getContext('2d');
     if (ctx2d) {
       global.CanvasRenderingContext2D = ctx2d.constructor;
     }
   }
-  if (!global.WebGLRenderingContext && dummyCanvas.getContext) {
-    const gl = dummyCanvas.getContext('webgl');
+  
+  const dummyCanvasWebGL = wx.createCanvas();
+  if (!global.WebGLRenderingContext && dummyCanvasWebGL.getContext) {
+    const gl = dummyCanvasWebGL.getContext('webgl');
     if (gl) {
       global.WebGLRenderingContext = gl.constructor;
     }

@@ -1,13 +1,19 @@
 
 
-import { HTMLElement } from './HTMLElement';
+import { HTMLCanvasElement as LocalHTMLCanvasElement } from './HTMLCanvasElement';
 
-export function enhanceCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
+export function enhanceCanvas(canvas: any): any {
   const enhancedCanvas = canvas as any;
 
   enhancedCanvas.type = 'canvas';
 
-  enhancedCanvas.__proto__.__proto__ = new HTMLElement('canvas');
+  // Inherit from our custom HTMLCanvasElement so instanceof checks work
+  const originalProto = Object.getPrototypeOf(enhancedCanvas);
+  if (originalProto) {
+    Object.setPrototypeOf(originalProto, LocalHTMLCanvasElement.prototype);
+  } else {
+    Object.setPrototypeOf(enhancedCanvas, LocalHTMLCanvasElement.prototype);
+  }
 
   enhancedCanvas.getBoundingClientRect = () => {
     return {
@@ -21,8 +27,8 @@ export function enhanceCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
   return enhancedCanvas;
 }
 
-export function Canvas(): HTMLCanvasElement {
-  return enhanceCanvas(wx.createCanvas() as unknown as HTMLCanvasElement);
+export function Canvas(): any {
+  return enhanceCanvas(wx.createCanvas());
 }
 
 export default Canvas;

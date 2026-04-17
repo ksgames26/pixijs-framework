@@ -8,8 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "build:wechat": "vite build --config vite.config.wechat.ts && node ../../scripts/copy-minigame-assets.js",
-    "build:douyin": "vite build --config vite.config.douyin.ts && node ../../scripts/copy-minigame-assets.js",
+    "build:wechat": "vite build --config vite.config.wechat.ts && node ../../scripts/copy-minigame-assets.js . wechat",
+    "build:douyin": "vite build --config vite.config.douyin.ts && node ../../scripts/copy-minigame-assets.js . douyin",
     "build:all": "pnpm build && pnpm build:wechat && pnpm build:douyin"
   },
   "dependencies": {

@@ -13,7 +13,7 @@ const events: Record<string, Array<(event: any) => void>> = {};
 // Canvas singleton
 let _canvas: any = null;
 
-export function setCanvas(canvas: HTMLCanvasElement): void {
+export function setCanvas(canvas: any): void {
   _canvas = canvas;
 }
 

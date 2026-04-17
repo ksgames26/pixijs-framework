@@ -77,6 +77,10 @@ export class HTMLElement extends Element {
   remove(): void {
     noop();
   }
+
+  contains(_node: any): boolean {
+    return true; // We default to true in mini-game to trick PixiJS into thinking it's in the DOM
+  }
 }
 
 export default HTMLElement;

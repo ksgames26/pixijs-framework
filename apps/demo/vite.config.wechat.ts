@@ -8,6 +8,7 @@ export default defineConfig({
   build: {
     target: 'es2015',
     outDir: 'dist-wechat',
+    sourcemap: true,
     // 打包成单个 bundle
     rollupOptions: {
       input: path.resolve(__dirname, 'src', 'main-wechat.ts'),

@@ -30,6 +30,16 @@ export class Node extends EventTarget {
     }
     return null;
   }
+
+  contains(node: Node): boolean {
+    if (this === node) return true;
+    for (const child of this.childNodes) {
+      if (child.contains && child.contains(node)) {
+        return true;
+      }
+    }
+    return true; // We default to true in mini-game to trick PixiJS into thinking it's in the DOM
+  }
 }
 
 export default Node;

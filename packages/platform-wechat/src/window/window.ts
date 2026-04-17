@@ -13,6 +13,14 @@ import { focus } from './focus';
 import { blur } from './blur';
 import { matchMedia } from '../screen/matchMedia';
 import { document } from '../dom/document';
+import { HTMLElement } from '../dom/HTMLElement';
+import { HTMLCanvasElement } from '../dom/HTMLCanvasElement';
+import { HTMLImageElement } from '../dom/HTMLImageElement';
+import { HTMLMediaElement } from '../dom/HTMLMediaElement';
+import { HTMLAudioElement } from '../dom/HTMLAudioElement';
+import { HTMLVideoElement } from '../dom/HTMLVideoElement';
+import { Element } from '../dom/Element';
+import { Node } from '../dom/Node';
 
 const systemInfo = wx.getSystemInfoSync();
 
@@ -21,7 +29,7 @@ interface Window {
   alert: (msg?: any) => void;
   focus: () => void;
   blur: () => void;
-  getComputedStyle: (element: Element) => CSSStyleDeclaration;
+  getComputedStyle: (element: any) => CSSStyleDeclaration;
   scrollTo: (x: number, y: number) => void;
   scrollBy: (dx: number, dy: number) => void;
   matchMedia: (query: string) => MediaQueryList;
@@ -48,6 +56,15 @@ interface Window {
   addEventListener: (type: string, listener: any) => void;
   removeEventListener: (type: string, listener: any) => void;
   dispatchEvent: (event: any) => boolean;
+
+  Node: typeof Node;
+  Element: typeof Element;
+  HTMLElement: typeof HTMLElement;
+  HTMLCanvasElement: typeof HTMLCanvasElement;
+  HTMLImageElement: typeof HTMLImageElement;
+  HTMLMediaElement: typeof HTMLMediaElement;
+  HTMLAudioElement: typeof HTMLAudioElement;
+  HTMLVideoElement: typeof HTMLVideoElement;
 }
 
 export const window: Window = {
@@ -115,6 +132,16 @@ export const window: Window = {
     document.dispatchEvent(event);
     return true;
   },
+
+  // DOM classes
+  Node,
+  Element,
+  HTMLElement,
+  HTMLCanvasElement,
+  HTMLImageElement,
+  HTMLMediaElement,
+  HTMLAudioElement,
+  HTMLVideoElement,
 };
 
 export default window;
